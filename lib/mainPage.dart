@@ -7,6 +7,7 @@ import 'package:wear_today/data_API/weatherData.dart';
 class mainPage extends StatefulWidget{
   final MyLocation myLocation;
   final weatherData weather;
+
   mainPage({Key? key, required this.myLocation, required this.weather}) : super(key: key);
   @override
   State<StatefulWidget> createState(){
@@ -15,6 +16,7 @@ class mainPage extends StatefulWidget{
 }
 
 class _mainPage extends State<mainPage>{
+  var now = DateTime.now();
   @override
   void initState(){
     super.initState();
@@ -22,7 +24,6 @@ class _mainPage extends State<mainPage>{
       setState(() {
         widget.weather.getWeather().then((_){
           setState(() {
-
           });
         });
       });
@@ -39,10 +40,13 @@ class _mainPage extends State<mainPage>{
             SizedBox(
               height: 75,
             ),
-            //Text('${widget.myLocation.getX()}°',style: TextStyle(fontSize: 150,fontWeight: FontWeight.bold),),
-            //Text('y좌표 : ${widget.myLocation.getY()}'),
+
             Icon(Icons.location_on),
-            Text('${widget.weather.getNowlocate()}',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+            Text('${widget.weather.getNowlocate()}',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
+            Text('${now.hour}시 기준',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+            Text('${widget.weather.TMPdata2[now.hour]}°',style: TextStyle(fontSize: 120,fontWeight: FontWeight.bold),),
+            //Text('${now.hour}',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
+            //Text('y좌표 : ${widget.myLocation.getY()}',style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
             //Text(widget.weather.getNowWeather()),
           ],
         ),

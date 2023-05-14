@@ -18,8 +18,10 @@ class weatherData {
   int? yCoordinate; // 변환된 y좌표
   double? Lati; // 위도
   double? Longi; // 경도
-  String? nowlocate; //현재 위치
-  String? nowWeather; //현재 날씨
+  String? nowlocate;
+  List TMPdata2 = List.filled(24, 0);//현재 위치
+  //List TMPdata2 = [];
+ // String? nowWeather; //현재 날씨
   void initState(){
 
   }
@@ -59,12 +61,49 @@ class weatherData {
     shortWeatherDate();
     //기상청 api 호출
     var url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
-        'serviceKey=$weatherApiKey&numOfRows=1000&pageNo=1&'
+        'serviceKey=$weatherApiKey&numOfRows=290&pageNo=1&'
         'base_date=$baseDate&base_time=$baseTime&nx=$xCoordinate&ny=$yCoordinate&dataType=JSON';
 
     var response = await http.get(Uri.parse(url));
-    nowWeather = response.body;
+    Map<String, dynamic> nowWeather = jsonDecode(response.body);
+    List<dynamic> itemList = nowWeather['response']['body']['items']['item'];
+
+    List<Map<String, dynamic>> TMPdata = [];
+    List<Map<String, dynamic>> POPdata = [];
+    List Popdata2 = [];
+
+  void Parsing2() {
+    int count=0;
+    // 0000시 기준의 예보 데이터 추출
+    for (dynamic item in itemList) {
+      if (item['category'] == 'TMP') {
+        TMPdata.add({
+          'fcstTime': item['fcstTime'],
+          'category': item['category'],
+          'fcstValue': item['fcstValue'],
+        });
+      }
+      if (item['category'] == 'POP') {
+        POPdata.add({
+          'fcstTime': item['fcstTime'],
+          'category': item['category'],
+          'fcstValue': item['fcstValue'],
+        });
+      }
+      if (item['category'] == 'POP') {
+        Popdata2.add({
+          'fcstValue': item['fcstValue'],
+        });
+      }
+      if (item['category'] == 'TMP') {
+        TMPdata2[count] = item['fcstValue'];
+        count++;
+      }
+    }
+  }
+    Parsing2();
     print(nowWeather);
+    print("afs");
 
   }
   void shortWeatherDate(){
@@ -76,9 +115,13 @@ class weatherData {
     return nowlocate;
   }
 
-  String? getNowWeather(){
-    return nowWeather;
+  int getTMP(hour){
+    return TMPdata2[hour];
   }
+ // String? getNowWeather(){
+  //  return nowWeather;
+ // }
+
 
 
 }
