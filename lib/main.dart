@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
-import 'package:wear_today/mainPage.dart';
-import 'package:wear_today/loading.dart';
-import 'package:wear_today/data_API/weatherData.dart';
-import 'package:wear_today/data_API/location.dart';
+import 'package:provider/provider.dart';
+import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
+import 'package:wear_today/_View/MainPage.dart';
 
 void main() {
-  MyLocation myLocation = MyLocation(); //main에서 선언 후 각 페이지로 클래스 전달
-  weatherData weather = weatherData();
-  runApp(MyApp(myLocation: myLocation, weather: weather));
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final MyLocation myLocation;
-  final weatherData weather;
-  const MyApp({Key? key, required this.myLocation, required this.weather}) : super(key: key);
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'wear_Tod',
-      debugShowCheckedModeBanner: false,
-      home: mainPage(myLocation: myLocation, weather: weather),
+      home: ChangeNotifierProvider<DayWeatherViewModel>(
+        create: (context) => DayWeatherViewModel(),
+        child: const MainView(),
+      ),
     );
   }
 }
