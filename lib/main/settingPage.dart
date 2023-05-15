@@ -9,7 +9,7 @@ class settingPage extends StatefulWidget{
 
 class _settingPage extends State<settingPage>{
   @override
-  Widget Build(BuildContext context){
+  Widget build(BuildContext context){
     return Scaffold();
   }
 }

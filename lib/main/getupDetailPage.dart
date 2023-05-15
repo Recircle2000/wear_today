@@ -9,7 +9,7 @@ class getupDetailPage extends StatefulWidget{
 
 class _getupDetailPage extends State<getupDetailPage>{
   @override
-  Widget Build(BuildContext context){
+  Widget build(BuildContext context){
     return Scaffold();
   }
 }

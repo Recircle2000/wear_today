@@ -9,7 +9,7 @@ class hourPage extends StatefulWidget{
 
 class _hourPage extends State<hourPage>{
   @override
-  Widget Build(BuildContext context){
+  Widget build(BuildContext context){
     return Scaffold();
   }
 }

@@ -36,6 +36,7 @@ dependencies:
   intl: ^0.17.0 #날짜/숫자 형식 지정 라이브러리
   baseflow_plugin_template: ^2.1.1
   flutter_config: ^2.0.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

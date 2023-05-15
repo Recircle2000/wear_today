@@ -6,7 +6,7 @@ import 'package:wear_today/data_API/weatherData.dart';
 import 'package:wear_today/data_API/location.dart';
 
 void main() {
-  MyLocation myLocation = MyLocation();
+  MyLocation myLocation = MyLocation(); //main에서 선언 후 각 페이지로 클래스 전달
   weatherData weather = weatherData();
   runApp(MyApp(myLocation: myLocation, weather: weather));
 }
