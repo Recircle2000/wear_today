@@ -4,7 +4,7 @@ import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import 'package:wear_today/_View/MainPage.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:math';
 
+//기상청에서 제공하는 gps -> 위경도 변환 코드
 class Weather_map_xy {
   int x;
   int y;

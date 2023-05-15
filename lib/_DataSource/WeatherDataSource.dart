@@ -30,6 +30,7 @@ class WeatherDataSource {
     return DateFormat("yyyyMMdd").format(
         DateTime.now().subtract(Duration(days: 1)));
   }
+
   void shortWeatherDate(){
     baseDate = getYesterdayDate();   //어제 날짜
     baseTime = "2300";
@@ -47,25 +48,23 @@ class WeatherDataSource {
         'input_coord=WGS84&output_coord=WGS84&x=$Lati&y=$Longi');
     var kakaoTM = await http.get(kakaoXYUrl, headers: {"Authorization": "KakaoAK $kakaoApiKey"});
     var TM = jsonDecode(kakaoTM.body);
-    print(_myLocation.getX());
+    /*print(_myLocation.getX());
     print(_myLocation.getlongi());
-    print(_myLocation.getlate());
-    nowlocate = TM['documents'][0]['region_2depth_name'];
+    print(_myLocation.getlate());*/
+    nowlocate = TM['documents'][0]['region_2depth_name']; // 현재 위치를 global 전역 변수에 저장.
     //nowlocate = TM;
 
-    shortWeatherDate();
+    shortWeatherDate(); // 어제 날짜랑 기준 날짜를 저장.
     //기상청 api 호출
     var url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
         'serviceKey=$weatherApiKey&numOfRows=290&pageNo=1&'
         'base_date=$baseDate&base_time=$baseTime&nx=$xCoordinate&ny=$yCoordinate&dataType=JSON';
-
+    // 어제 23시를 기준으로 오늘 예보를 불러옴.
     final response = await http.get(Uri.parse(url));
     //Map<String, dynamic> nowWeather = jsonDecode(response.body);
-    return jsonDecode(response.body)['response']['body']['items']['item'].map<DayWeather>((json) => DayWeather.fromJson(json)).toList();
-
-
-
-
-
+    return jsonDecode(response.body)['response']['body']['items']['item'] // 가져온 원본 JSON에서 item키 까지 추출하고 JSON 디코딩.
+        .map<DayWeather>((json) => DayWeather
+        .fromJson(json)) // 반환된 객체에 map메서드를 호출하여 Model의 DayWeather객체로 변환.
+        .toList(); //객체를 리스트로 변환.
   }
 }

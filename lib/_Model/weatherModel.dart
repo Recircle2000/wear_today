@@ -1,3 +1,5 @@
+//JSON데이터를 DayWeather 클래스 리스트로 저장. 이 과정에서 우리가 원하는 값(
+
 class DayWeather{
   int? fcstDate; // 예보일자
   String? fcstTime; // 예보시각
@@ -6,7 +8,11 @@ class DayWeather{
 
   DayWeather({this.category,this.fcstDate,this.fcstTime,this.fcstValue});
 
-  factory DayWeather.fromJson(Map<String, dynamic> json) {
-    return DayWeather(fcstDate: int.tryParse(json['fcstDate']),fcstTime: json['fcstTime'],category: json['category'],fcstValue: double.tryParse(json['fcstValue']));
-  }
+  factory DayWeather.fromJson(Map<String, dynamic> json) { //Json데이터를 포함한 맵을 DataSource에서 받아옴.
+    return DayWeather(
+        fcstDate: int.tryParse(json['fcstDate']),
+        fcstTime: json['fcstTime'],
+        category: json['category'],
+        fcstValue: double.tryParse(json['fcstValue']));
+  }//받아온 값을 사용하여 DayWeather객체 생성 후 반환.
 }
