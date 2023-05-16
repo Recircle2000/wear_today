@@ -7,8 +7,8 @@ class DayWeather{
   double? fcstValue; // 예보 값
 
   DayWeather({this.category,this.fcstDate,this.fcstTime,this.fcstValue});
-
-  factory DayWeather.fromJson(Map<String, dynamic> json) { //Json데이터를 포함한 맵을 DataSource에서 받아옴.
+  //Json데이터를 포함한 맵을 DataSource에서 받아옴.
+  factory DayWeather.fromJson(Map<String, dynamic> json) {
     return DayWeather(
         fcstDate: int.tryParse(json['fcstDate']),
         fcstTime: json['fcstTime'],

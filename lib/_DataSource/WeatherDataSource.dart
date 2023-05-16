@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../_Model/weatherModel.dart';
 import 'package:wear_today/_DataSource/location.dart';
 import 'package:intl/intl.dart';
-import '../_DataSource/global.dart';
+import '../_Model/global.dart';
+
 
 class WeatherDataSource {
   final MyLocation _myLocation = MyLocation();
@@ -52,6 +54,7 @@ class WeatherDataSource {
     print(_myLocation.getlongi());
     print(_myLocation.getlate());*/
     nowlocate = TM['documents'][0]['region_2depth_name']; // 현재 위치를 global 전역 변수에 저장.
+    Islocate = Icons.location_on;
     //nowlocate = TM;
 
     shortWeatherDate(); // 어제 날짜랑 기준 날짜를 저장.
@@ -64,7 +67,7 @@ class WeatherDataSource {
     //Map<String, dynamic> nowWeather = jsonDecode(response.body);
     return jsonDecode(response.body)['response']['body']['items']['item'] // 가져온 원본 JSON에서 item키 까지 추출하고 JSON 디코딩.
         .map<DayWeather>((json) => DayWeather
-        .fromJson(json)) // 반환된 객체에 map메서드를 호출하여 Model의 DayWeather객체로 변환.
+        .fromJson(json))// 반환된 객체에 map메서드를 호출하여 Model의 DayWeather객체로 변환.
         .toList(); //객체를 리스트로 변환.
   }
 }
