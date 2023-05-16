@@ -8,4 +8,6 @@ class DayWeatherRepository {
   Future<List<DayWeather>> getWeatherList(){
     return _weatherDataSource.getWeatherList();
   }
+
+
 }
