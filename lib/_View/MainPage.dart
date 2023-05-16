@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wear_today/_View/getupDetailPage.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
@@ -64,7 +65,17 @@ class _MainViewState extends State<MainView> {
                     child: ListView.builder(
                         itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
                         itemBuilder: (context, index) {
-                          return Card(
+                          return InkWell(
+                            onTap: (){
+                              Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => getupDetailPage(
+                                weatherList: weatherList,
+                                index: index,
+                              )),
+                              );
+                            },
+
+                          child: Card(
                             margin: EdgeInsets.only(top: 15),
                               color: Colors.blue[50],
                               shape: RoundedRectangleBorder(  //모서리를 둥글게 하기 위해 사용
@@ -92,6 +103,7 @@ class _MainViewState extends State<MainView> {
                                 ),
                               ],
                             ),
+                          ),
                           );
                         })),
               ],

@@ -11,7 +11,7 @@ String findTMP(int time, List<DayWeather> weatherList){ // 리스트에서 원�
 
   for (DayWeather item in weatherList){
     if (item.category == 'TMP' && item.fcstTime == rtime) { // 요청한 rtime의 TMP데이터를 weatherList에서 찾아서 리턴.
-      return '${item.fcstValue!}°';
+      return '${item.fcstValue!.toInt()}°';
     }
   }
   return "";
