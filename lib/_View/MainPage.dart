@@ -57,7 +57,7 @@ class _MainViewState extends State<MainView> {
                 ),
                 Expanded(
                     child: ListView.builder(
-                        itemCount: (23 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
+                        itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
                         itemBuilder: (context, index) {
                           return InkWell(//터지 감지
                             onTap: (){
@@ -73,7 +73,7 @@ class _MainViewState extends State<MainView> {
                             margin: EdgeInsets.only(top: 15),
                               color: Colors.blue[50], //카드 색상
                               shape: RoundedRectangleBorder(  //모서리를 둥글게 하기 위해 사용
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(20.0),
                               ),
                             elevation: 20.0, //그림자
                             child: Row(
@@ -95,6 +95,19 @@ class _MainViewState extends State<MainView> {
                                     ],
                                   ),
                                 ),
+                                Container(
+                                  width: 290,
+                                  height: 100,
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('text'),
+                                      Text('text'),
+                                      Text('text'),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),

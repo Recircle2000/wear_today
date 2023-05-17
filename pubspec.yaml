@@ -39,6 +39,7 @@ dependencies:
   provider: ^6.0.5
   flutter_native_splash: ^2.2.19
   weather_icons: ^3.0.0
+  firebase_core: ^2.13.0
 
 dev_dependencies:
   flutter_test:
