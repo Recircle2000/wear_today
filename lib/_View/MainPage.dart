@@ -20,7 +20,6 @@ class _MainViewState extends State<MainView> {
   late List<DayWeather> weatherList;
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       /*appBar: AppBar(
@@ -38,34 +37,29 @@ class _MainViewState extends State<MainView> {
                 ),
                 // Text('test'),
                 Icon(Islocate),
-                Text(
-                  '$nowlocate',
+                Text('$nowlocate',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '${now.hour}시 기준',
+                Text('${now.hour}시 기준',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
-                    ? Text(
-                        "${findTMP(now.hour, weatherList)}",
-                        style: TextStyle(
-                            fontSize: 120, fontWeight: FontWeight.bold),
-                      )
+                    ? Text("${findTMP(now.hour, weatherList)}",
+                  style:  TextStyle(
+                      fontSize: 120, fontWeight: FontWeight.bold),
+                )
                     : Text("위치 수신을 기다리는 중..."),
-                Text(
-                  "${findSKY(now.hour, weatherList)}",
+                Text("${findSKY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  "${findPTY(now.hour, weatherList)}",
+                Text("${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 Expanded(
                     child: ListView.builder(
-                        itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
+                        itemCount: (23 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
                         itemBuilder: (context, index) {
-                          return InkWell(
+                          return InkWell(//터지 감지
                             onTap: (){
                               Navigator.push(context,
                               MaterialPageRoute(builder: (context) => getupDetailPage(
@@ -77,11 +71,11 @@ class _MainViewState extends State<MainView> {
 
                           child: Card(
                             margin: EdgeInsets.only(top: 15),
-                              color: Colors.blue[50],
+                              color: Colors.blue[50], //카드 색상
                               shape: RoundedRectangleBorder(  //모서리를 둥글게 하기 위해 사용
                               borderRadius: BorderRadius.circular(30.0),
                               ),
-                            elevation: 20.0,
+                            elevation: 20.0, //그림자
                             child: Row(
                               children: [
                                 Container(
@@ -90,14 +84,14 @@ class _MainViewState extends State<MainView> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('${index +1}시간 뒤'),
-                                      Text(
-                                        '${findTMP(now.hour + index, weatherList)}',
+                                      Text('${now.hour + index}시'),
+                                      Text('${findTMP(now.hour + index, weatherList)}',
                                         style: TextStyle(
                                             fontSize: 40,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Text('${findSKY(now.hour + index, weatherList)}')
+                                      Text('${findSKY(now.hour + index, weatherList)}',
+                                      )
                                     ],
                                   ),
                                 ),
