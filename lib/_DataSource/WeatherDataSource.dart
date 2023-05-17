@@ -57,8 +57,10 @@ class WeatherDataSource {
     Islocate = Icons.location_on;
     //nowlocate = TM;
 
+
     shortWeatherDate(); // 어제 날짜랑 기준 날짜를 저장.
     //기상청 api 호출
+
     var url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?'
         'serviceKey=$weatherApiKey&numOfRows=290&pageNo=1&'
         'base_date=$baseDate&base_time=$baseTime&nx=$xCoordinate&ny=$yCoordinate&dataType=JSON';
