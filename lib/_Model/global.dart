@@ -13,3 +13,5 @@ String? nowlocate = '위치 수신 중..'; //현재 위치, View_Mainpage에서 
 IconData Islocate = Icons.location_off_outlined;
 var now = DateTime.now();
 List<Map<String, dynamic>> newList = List.generate(24, (index) => {'0': '0'});
+double sliderValue = 0;
+String? inputLocation = "위치 입력";

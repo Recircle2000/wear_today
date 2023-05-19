@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wear_today/_View/getupDetailPage.dart';
+import 'package:wear_today/_View/settingPage.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
@@ -33,10 +34,66 @@ class _MainViewState extends State<MainView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 75,
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                        onPressed: (){
+                        showDialog(context: context, builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("현재 위치 : $nowlocate"),
+                            content:
+                            TextField(
+                              decoration: InputDecoration(
+                                hintText: "위치 입력"
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  inputLocation = value;
+                                });
+                              },
+                            ),
+                            actions: [
+                              TextButton(onPressed: (){
+                                Navigator.of(context).pop();
+                              }, child: Text("닫기"),
+                              ),
+                            ],
+                          );
+                        },
+                        );
+                    },
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(), // 동그란 모양의 버튼
+                          padding: EdgeInsets.all(16.0), // 버튼 패딩 설정
+                          primary: Colors.lightBlue[50],
+                          elevation: 4,
+                          shadowColor: Colors.black,
+                        ),
+                        child: Icon(Icons.add_location_alt,color: Colors.black,)),
+                    Icon(Islocate),
+                    ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => settingPage(
+
+                          )),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(), // 동그란 모양의 버튼
+                          padding: EdgeInsets.all(16.0), // 버튼 패딩 설정
+                          primary: Colors.lightBlue[50],
+                          elevation: 4,
+                          shadowColor: Colors.black,
+                        ),
+                        child: Icon(Icons.settings,color: Colors.black,)),
+                  ],
                 ),
                 // Text('test'),
-                Icon(Islocate),
+                
                 Text('$nowlocate',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
@@ -49,9 +106,9 @@ class _MainViewState extends State<MainView> {
                       fontSize: 120, fontWeight: FontWeight.bold),
                 )
                     : Text("위치 수신을 기다리는 중..."),
-                Text("${findSKY(now.hour, weatherList)}",
+                /*Text("${findSKY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
+                ),*/
                 Text("${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),

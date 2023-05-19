@@ -32,7 +32,7 @@ String findPOP(int time, List<DayWeather> weatherList){ // 리스트에서 원�
   return "";
 }
 
-//비/눈
+//비/눈 정보가 없을땐 findSKY정보 자동 호출
 String findPTY(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 PTY 데이터만 찾아서 리턴.
   String rtime = "";
   if (time < 10) {
@@ -42,7 +42,7 @@ String findPTY(int time, List<DayWeather> weatherList){ // 리스트에서 원�
   for (DayWeather item in weatherList){
     if (item.category == 'PTY' && item.fcstTime == rtime) { // 요청한 rtime의 PTY데이터를 weatherList에서 찾아서 리턴.
       if (item.fcstValue == 0) {
-        return "";
+        return findSKY(time, weatherList); //정보가 없을땐 findSKY정보 자동 호출
       } else if (item.fcstValue == 1) {
         return "비";
       } else if (item.fcstValue == 2) {
@@ -58,7 +58,7 @@ String findPTY(int time, List<DayWeather> weatherList){ // 리스트에서 원�
   return "";
 }
 
-//구름 정보
+//구름 정보 only
 String findSKY(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 SKY 데이터만 찾아서 리턴.
   String rtime = "";
   if (time < 10) {
