@@ -4,8 +4,8 @@ import 'dart:math';
 
 //기상청에서 제공하는 gps -> 위경도 변환 코드
 class Weather_map_xy {
-  int x;
-  int y;
+  double x;
+  double y;
   Weather_map_xy(this.x, this.y);
 }
 
@@ -66,7 +66,7 @@ Weather_map_xy changelaluMap(double longitude, double latitude) {
   double y = (ro! - ra * cos(theta)) + map.yo!;
   x = x + 1.5;
   y = y + 1.5;
-  return Weather_map_xy(x.toInt(), y.toInt());
+  return Weather_map_xy(x, y);
 }
 
 Future<Position> getMyCurrentLocation() async {
@@ -75,9 +75,10 @@ Future<Position> getMyCurrentLocation() async {
       desiredAccuracy: LocationAccuracy.high);
 }
 
+
 class MyLocation{
-  int? currentX; //경도longitude
-  int? currentY; //위도latitude
+  double? currentX; //경도longitude
+  double? currentY; //위도latitude
   double? longi;
   double? lati;
 
@@ -88,13 +89,18 @@ class MyLocation{
       Weather_map_xy weathermapxy = changelaluMap(position.longitude, position.latitude);
       currentX = weathermapxy.x;
       currentY = weathermapxy.y;
-
   }
 
-  int? getX(){
+  Future<void> lolaTOxy(double long, double lati) async {
+    Weather_map_xy weathermapxy = changelaluMap(long, lati);
+    currentX = weathermapxy.x;
+    currentY = weathermapxy.y;
+  }
+
+  double? getX(){
     return currentX;
   }
-  int? getY(){
+  double? getY(){
     return currentY;
   }
   double? getlongi(){

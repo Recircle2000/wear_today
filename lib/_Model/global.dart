@@ -9,9 +9,10 @@ import '../_View/MainPage.dart';
 
 // 그냥 전역 변수 저장하는 곳.
 
-String? nowlocate = '위치 수신 중..'; //현재 위치, View_Mainpage에서 사용.
-IconData Islocate = Icons.location_off_outlined;
+String? nowLocate = '위치 수신 중..'; //현재 위치, View_Mainpage에서 사용.
+String? updateLocate = '';
+IconData islocate = Icons.location_off_outlined;
 var now = DateTime.now();
-List<Map<String, dynamic>> newList = List.generate(24, (index) => {'0': '0'});
 double sliderValue = 0;
 String? inputLocation = "위치 입력";
+enum Gender { male, female }

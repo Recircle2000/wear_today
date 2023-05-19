@@ -18,18 +18,12 @@ class DayWeatherViewModel with ChangeNotifier {
 
   Future<void> _getWeatherList() async{
     _weatherList = await _dayWeatherRepository.getWeatherList();
-    Parsing();
+    print(_weatherList);
     notifyListeners(); // 구독하고 있는 위젯들이 갱신됨. main함수 MaterialApp에서 구독하고 있으므로 하위 위젯들이 모두 갱신됨.
   }
 
-  void Parsing(){
-    String temp = '00';
-    for (DayWeather item in weatherList){
-      if (item.fcstTime == '${now.hour}00') {
-        newList[now.hour]=
-            {'${item.category}' : '${item.fcstValue}'};
-      }
-    }
-    notifyListeners();
+  Future<void> refreshWeatherList() async{
+    _weatherList = [];
+    await _getWeatherList();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../_Model/weatherModel.dart';
 import '../_Repository/DayWeatherRepo.dart';
 import 'package:wear_today/_Model/global.dart';
+import 'dart:math';
 
 String findTMP(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 TMP 데이터만 찾아서 리턴.
   String rtime = "";
@@ -87,20 +88,16 @@ String findWSD(int time, List<DayWeather> weatherList){ // 리스트에서 원�
 
   for (DayWeather item in weatherList){
     if (item.category == 'WSD' && item.fcstTime == rtime) { // 요청한 rtime의 WSD데이터를 weatherList에서 찾아서 리턴.
-      if (item.fcstValue == 1) {
-        return "맑음";
-      } else if (item.fcstValue == 3) {
-        return "구름많음";
-      } else return "흐림";
-      //return '${item.fcstValue!}';
+      return '${item.fcstValue!}';
     }
-
   }
   return "";
 }
 
-/*
-double calculateWindChill(double temperature, double windSpeed) {
-  double windChill = 13.12 + 0.6215 * temperature - 11.37 * (pow(windSpeed, 0.16)) + 0.3965 * temperature * (pow(windSpeed, 0.16));
-  return windChill;
-}*/
+String findWindChillTemp(int time, List<DayWeather> weatherList){
+  int fTemp=0;
+  String rTemp = findTMP(time, weatherList).replaceAll('°','');
+  fTemp = (35.74 + (0.6215 * double.parse(rTemp)) - (35.75 * pow(double.parse(findWSD(time, weatherList)), 0.16)) + (0.4275 * double.parse(rTemp) * pow(double.parse(findWSD(time, weatherList)), 0.16))).toInt();
+  return "${fTemp.toString()}°";
+}
+

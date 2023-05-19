@@ -14,6 +14,7 @@ class settingPage extends StatefulWidget {
 }
 
 class _settingPage extends State<settingPage> {
+  Gender? selectedGender;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +43,29 @@ class _settingPage extends State<settingPage> {
               setState(() {
                 sliderValue = newValue;
               });
-                })
+                }),
+        DropdownButtonFormField<Gender>(
+          value: selectedGender,
+          onChanged: (Gender? value) {
+            setState(() {
+              selectedGender = value;
+            });
+          },
+          items: [
+            DropdownMenuItem<Gender>(
+              value: Gender.male,
+              child: const Text('Male'),
+            ),
+            DropdownMenuItem<Gender>(
+              value: Gender.female,
+              child: const Text('Female'),
+            ),
+          ],
+          decoration: InputDecoration(
+            labelText: 'Gender',
+            border: OutlineInputBorder(),
+          ),
+        ),
           ],
         ),
       ),

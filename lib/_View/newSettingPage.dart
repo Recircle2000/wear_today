@@ -6,22 +6,20 @@ import 'package:wear_today/_DataSource/WeatherDataSource.dart';
 
 import '../_ViewModel/findCategory.dart';
 
-class getupDetailPage extends StatefulWidget{
-  final List<DayWeather> weatherList;
-  final int index;
-
-  getupDetailPage({required this.weatherList, required this.index});
+class newsettingPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState(){
-    return _getupDetailPage();
+  State<StatefulWidget> createState() {
+    return _newsettingPage();
   }
 }
 
-class _getupDetailPage extends State<getupDetailPage>{
+class _newsettingPage extends State<newsettingPage> {
+  Gender? selectedGender;
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('설정'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -31,17 +29,8 @@ class _getupDetailPage extends State<getupDetailPage>{
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-            //테스트용
-            Text('${findTMP(now.hour + widget.index, widget.weatherList)}',
-              style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),),
-            //Text('test'),
-          ],
+        //여기에 UI구축
         ),
-      ),
     );
   }
 }

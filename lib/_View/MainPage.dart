@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wear_today/_View/getupDetailPage.dart';
-import 'package:wear_today/_View/settingPage.dart';
+import 'package:wear_today/_View/newsettingPage.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
@@ -43,7 +43,7 @@ class _MainViewState extends State<MainView> {
                         onPressed: (){
                         showDialog(context: context, builder: (BuildContext context){
                           return AlertDialog(
-                            title: Text("현재 위치 : $nowlocate"),
+                            title: Text("현재 위치 : $nowLocate"),
                             content:
                             TextField(
                               decoration: InputDecoration(
@@ -51,15 +51,35 @@ class _MainViewState extends State<MainView> {
                               ),
                               onChanged: (value){
                                 setState(() {
+                                  updateLocate = value;
                                   inputLocation = value;
                                 });
                               },
                             ),
                             actions: [
-                              TextButton(onPressed: (){
-                                Navigator.of(context).pop();
-                              }, child: Text("닫기"),
-                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(onPressed: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                    child: Text("취소"),
+                                  ),
+                                  TextButton(onPressed: (){
+                                    setState(() {
+                                      weatherList = [];
+                                      print(weatherList);
+                                      provider.refreshWeatherList().then((_) {
+                                        print(weatherList);
+                                      }
+                                      );
+                                      nowLocate=updateLocate;
+                                    });
+                                    Navigator.of(context).pop();
+                                  }, child: Text("적용"),
+                                  ),
+                                ],
+                              )
                             ],
                           );
                         },
@@ -73,12 +93,11 @@ class _MainViewState extends State<MainView> {
                           shadowColor: Colors.black,
                         ),
                         child: Icon(Icons.add_location_alt,color: Colors.black,)),
-                    Icon(Islocate),
+                    Icon(islocate),
                     ElevatedButton(
                         onPressed: (){
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => settingPage(
-
+                              MaterialPageRoute(builder: (context) => newsettingPage(
                           )),
                           );
                         },
@@ -94,7 +113,7 @@ class _MainViewState extends State<MainView> {
                 ),
                 // Text('test'),
                 
-                Text('$nowlocate',
+                Text('$nowLocate',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 Text('${now.hour}시 기준',
@@ -105,13 +124,16 @@ class _MainViewState extends State<MainView> {
                   style:  TextStyle(
                       fontSize: 120, fontWeight: FontWeight.bold),
                 )
-                    : Text("위치 수신을 기다리는 중..."),
-                /*Text("${findSKY(now.hour, weatherList)}",
+                    : Text("데이터 가져오는 중..."),
+                weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                    ? Text("체감 : ${findWindChillTemp(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),*/
+                )
+                    : Text(""),
                 Text("${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
+
                 Expanded(
                     child: ListView.builder(
                         itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
