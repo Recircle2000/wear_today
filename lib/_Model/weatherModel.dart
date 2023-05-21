@@ -19,6 +19,5 @@ class DayWeather{
         nx: json['nx'],
         ny: json['ny'],
     );
-
   }//받아온 값을 사용하여 DayWeather객체 생성 후 반환.
 }

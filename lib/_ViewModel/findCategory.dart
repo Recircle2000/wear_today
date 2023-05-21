@@ -4,7 +4,7 @@ import '../_Repository/DayWeatherRepo.dart';
 import 'package:wear_today/_Model/global.dart';
 import 'dart:math';
 
-String findTMP(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 TMP 데이터만 찾아서 리턴.
+int findTMP(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 TMP 데이터만 찾아서 리턴.
   String rtime = "";
   if (time < 10) {
     rtime = '0${time}00'; // 0시 ~ 9시는 '0'000형식으로 rtime에 저장
@@ -12,10 +12,10 @@ String findTMP(int time, List<DayWeather> weatherList){ // 리스트에서 원�
 
   for (DayWeather item in weatherList){
     if (item.category == 'TMP' && item.fcstTime == rtime) { // 요청한 rtime의 TMP데이터를 weatherList에서 찾아서 리턴.
-      return '${item.fcstValue!.toInt()}°';
+      return item.fcstValue!.toInt();
     }
   }
-  return "";
+  return 0;
 }
 
 //강수확률
@@ -94,10 +94,10 @@ String findWSD(int time, List<DayWeather> weatherList){ // 리스트에서 원�
   return "";
 }
 
-String findWindChillTemp(int time, List<DayWeather> weatherList){
+int findWindChillTemp(int time, List<DayWeather> weatherList){
   int fTemp=0;
-  String rTemp = findTMP(time, weatherList).replaceAll('°','');
-  fTemp = (35.74 + (0.6215 * double.parse(rTemp)) - (35.75 * pow(double.parse(findWSD(time, weatherList)), 0.16)) + (0.4275 * double.parse(rTemp) * pow(double.parse(findWSD(time, weatherList)), 0.16))).toInt();
-  return "${fTemp.toString()}°";
+  double rTemp = (findTMP(time, weatherList)).toDouble();
+  fTemp = (35.74 + (0.6215 * rTemp) - (35.75 * pow(double.parse(findWSD(time, weatherList)), 0.16)) + (0.4275 * rTemp * pow(double.parse(findWSD(time, weatherList)), 0.16))).toInt();
+  return fTemp;
 }
 

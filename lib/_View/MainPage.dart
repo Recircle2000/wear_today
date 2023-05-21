@@ -5,7 +5,7 @@ import 'package:wear_today/_View/newsettingPage.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
-
+import 'debug.dart';
 import '../_Model/weatherModel.dart';
 
 class MainView extends StatefulWidget {
@@ -120,19 +120,34 @@ class _MainViewState extends State<MainView> {
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
-                    ? Text("${findTMP(now.hour, weatherList)}",
+                    ? Text("${findTMP(now.hour, weatherList)}°",
                   style:  TextStyle(
                       fontSize: 120, fontWeight: FontWeight.bold),
                 )
                     : Text("데이터 가져오는 중..."),
                 weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
-                    ? Text("체감 : ${findWindChillTemp(now.hour, weatherList)}",
+                    ? Text("체감 : ${findWindChillTemp(now.hour, weatherList)}°",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 )
                     : Text(""),
                 Text("${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
+                ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => debug(
+                        )),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(), // 동그란 모양의 버튼
+                      padding: EdgeInsets.all(16.0), // 버튼 패딩 설정
+                      primary: Colors.lightBlue[50],
+                      elevation: 4,
+                      shadowColor: Colors.black,
+                    ),
+                    child: Icon(Icons.bug_report,color: Colors.black,)),
 
                 Expanded(
                     child: ListView.builder(
@@ -164,11 +179,12 @@ class _MainViewState extends State<MainView> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text('${now.hour + index}시'),
-                                      Text('${findTMP(now.hour + index, weatherList)}',
-                                        style: TextStyle(
-                                            fontSize: 40,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                                          ? Text("${findTMP(now.hour, weatherList)}°",
+                                        style:  TextStyle(
+                                            fontSize: 40, fontWeight: FontWeight.bold),
+                                      )
+                                          : Text("데이터 가져오는 중..."),
                                       Text('${findSKY(now.hour + index, weatherList)}',
                                       )
                                     ],
