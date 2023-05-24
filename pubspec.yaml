@@ -40,6 +40,10 @@ dependencies:
   flutter_native_splash: ^2.2.19
   weather_icons: ^3.0.0
   firebase_core: ^2.13.0
+  flutter_launcher_icons: ^0.13.1
+  sqflite: ^2.2.8+4
+  path: ^1.8.2
+
 
 dev_dependencies:
   flutter_test:
@@ -64,7 +68,11 @@ flutter:
   uses-material-design: true
 
 assets:
-  - assets/aplash/splash.jpg
+  - assets/splash/splash.png
+  - assets/female/
+  - assets/male/
+  - assets/Public/
+  - assets/clothes
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

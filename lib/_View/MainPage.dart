@@ -124,7 +124,10 @@ class _MainViewState extends State<MainView> {
                   style:  TextStyle(
                       fontSize: 120, fontWeight: FontWeight.bold),
                 )
-                    : Text("데이터 가져오는 중..."),
+                    : Text("--",
+                  style:  TextStyle(
+                    fontSize: 40, fontWeight: FontWeight.bold),
+                ),
                 weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                     ? Text("체감 : ${findWindChillTemp(now.hour, weatherList)}°",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -180,11 +183,14 @@ class _MainViewState extends State<MainView> {
                                     children: [
                                       Text('${now.hour + index}시'),
                                       weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
-                                          ? Text("${findTMP(now.hour, weatherList)}°",
+                                          ? Text("${findTMP(now.hour + index, weatherList)}°",
                                         style:  TextStyle(
                                             fontSize: 40, fontWeight: FontWeight.bold),
                                       )
-                                          : Text("데이터 가져오는 중..."),
+                                          : Text("--",
+                                        style:  TextStyle(
+                                          fontSize: 40, fontWeight: FontWeight.bold),
+                                      ),
                                       Text('${findSKY(now.hour + index, weatherList)}',
                                       )
                                     ],
@@ -195,9 +201,8 @@ class _MainViewState extends State<MainView> {
                                   height: 100,
                                   color: Colors.white,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text('text'),
                                       Text('text'),
                                       Text('text'),
                                     ],

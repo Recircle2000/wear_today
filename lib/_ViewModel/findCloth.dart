@@ -4,24 +4,41 @@ import '../_Repository/DayWeatherRepo.dart';
 import 'package:wear_today/_Model/global.dart';
 import 'findCategory.dart';
 
-String season(int time, List<DayWeather> weatherList){
-  int temp = findTMP(time, weatherList);
 
-  bool freezing = temp < 4;
-  bool cold = temp <=5 && temp < 9;
-  bool cool = temp <=9 && temp < 12;
-  bool mild = temp <=12 && temp < 17;
-  bool warm = temp <=17 && temp < 20;
-  bool hot = temp <=20 && temp < 23;
-  bool veryHot = temp <=23 && temp < 28;
-  bool exHot = temp >= 28;
+int getScore(int time,List<DayWeather> weatherList){
+  int temp = findWindChillTemp(time, weatherList);
+  int custom = sliderValue.toInt();
 
-
-
-  return "null";
+  return temp + custom;
 }
 
- List<Map<String,String>> listup_clothes_main(int time, List<DayWeather> weatherList,int num){
+String season(int time, List<DayWeather> weatherList){
+  int Score = getScore(time, weatherList);
+  String Temp = "";
+  bool freezing = Score < 4;
+  bool cold = Score <=5 && Score < 9;
+  bool cool = Score <=9 && Score < 12;
+  bool mild = Score <=12 && Score < 17;
+  bool warm = Score <=17 && Score < 20;
+  bool hot = Score <=20 && Score < 23;
+  bool veryHot = Score <=23 && Score < 28;
+  bool exHot = Score >= 28;
 
-   return null;
- }
+  if (Score < 4) {
+    return 'freezing';
+  } else if (Score <=5 && Score < 9) {
+    return 'cold';
+  } else if (Score <=9 && Score < 12) {
+    return 'cool';
+  } else if (Score <=12 && Score < 17) {
+    return 'mild';
+  } else if (Score <=17 && Score < 20) {
+    return 'warm';
+  } else if (Score <=20 && Score < 23) {
+    return 'hot';
+  } else if (Score <=23 && Score < 28) {
+    return 'veryHot';
+  } else if (Score >= 28) {
+    return 'exHot';
+  } else return '';
+}
