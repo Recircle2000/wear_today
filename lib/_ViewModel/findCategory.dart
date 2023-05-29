@@ -101,3 +101,10 @@ int findWindChillTemp(int time, List<DayWeather> weatherList){
   return fTemp;
 }
 
+int getScore(int time,List<DayWeather> weatherList){
+  int temp = findWindChillTemp(time, weatherList);
+  int custom = sliderValue.toInt();
+
+  return temp + custom;
+}
+

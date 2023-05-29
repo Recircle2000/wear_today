@@ -4,12 +4,12 @@ class Clothes {
   String? gender;
   String? section;
   String? description;
-  String? imagename;
+  String? imagePath;
   int? lowTemp;
   int? highTemp;
 
   Clothes({this.id, this.name, this.gender, this.section, this.description,
-      this.imagename, this.lowTemp, this.highTemp});
+      this.imagePath, this.lowTemp, this.highTemp});
 
 
   Map<String, dynamic> toMap(){
@@ -19,13 +19,9 @@ class Clothes {
       'gender': gender,
       'section': section,
       'description': description,
-      'imagename': imagename,
-      'lowTemp':lowTemp,
-      'highTemp':highTemp,
+      'imagePath': imagePath,
+      'lowTemp' : lowTemp,
+      'highTemp' : highTemp,
     };
-  }
-
-  String Test(){
-    return ''
   }
 }

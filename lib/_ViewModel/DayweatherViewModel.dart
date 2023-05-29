@@ -6,7 +6,7 @@ import 'package:wear_today/_Model/global.dart';
 //View의 상태를 관리하고 View의 비즈니스 로직을 담당
 //notifyListeners를 통해 데이터에 업데이트가 있다는 것을 ViewModel를 참조하고 있는 View에게 알려줌.
 
-class DayWeatherViewModel with ChangeNotifier {
+class DayWeatherViewModel extends ChangeNotifier {
   late final DayWeatherRepository _dayWeatherRepository;
   List<DayWeather> _weatherList = List.empty(growable: true);
   List<DayWeather> get weatherList => _weatherList;

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wear_today/_View/MainPage.dart';
 import 'package:wear_today/_Model/weatherModel.dart';
 import 'package:wear_today/_Model/global.dart';
 import 'package:wear_today/_DataSource/WeatherDataSource.dart';
-
+import '../_ViewModel/DBViewModel.dart';
+import '../_ViewModel/DayweatherViewModel.dart';
 import '../_ViewModel/findCategory.dart';
 
 class debug extends StatefulWidget {
@@ -15,8 +17,11 @@ class debug extends StatefulWidget {
 
 class _debug extends State<debug> {
   Gender? selectedGender;
+  late List<DayWeather> weatherList;
+  late List<Map<String, dynamic>> dbList;
   @override
   Widget build(BuildContext context) {
+    DBViewModel dbProvider = Provider.of<DBViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('설정'),
@@ -28,17 +33,16 @@ class _debug extends State<debug> {
           },
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text('nowLocate : $nowLocate'),
-            Text('updageLocate : $updateLocate'),
-            Text('sliderValue : $sliderValue'),
-            Text('inputlocation $inputLocation'),
-          ],
-        ),
-        //여기에 UI구축
-      ),
-    );
+            body: Column(
+              children: [
+                Text('nowLocate : $nowLocate'),
+                Text('updageLocate : $updateLocate'),
+                Text('sliderValue : $sliderValue'),
+                Text('inputlocation $inputLocation'),
+              ],
+            ),
+            //여기에 UI구축
+          );
+
   }
 }

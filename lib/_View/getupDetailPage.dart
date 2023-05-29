@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wear_today/_View/MainPage.dart';
 import 'package:wear_today/_Model/weatherModel.dart';
 import 'package:wear_today/_Model/global.dart';
 import 'package:wear_today/_DataSource/WeatherDataSource.dart';
 
+import '../_ViewModel/DBViewModel.dart';
 import '../_ViewModel/findCategory.dart';
 
 class getupDetailPage extends StatefulWidget{
@@ -20,6 +22,7 @@ class getupDetailPage extends StatefulWidget{
 class _getupDetailPage extends State<getupDetailPage>{
   @override
   Widget build(BuildContext context){
+    DBViewModel dbProvider = Provider.of<DBViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -38,6 +41,26 @@ class _getupDetailPage extends State<getupDetailPage>{
               style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold),),
+            widget.weatherList
+                .isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                ? FutureBuilder<String>(
+              future: dbProvider.get1URL(getScore(now.hour + widget.index, widget.weatherList)),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Image.asset("${snapshot.data!}",
+                    width: 70,
+                    height: 70,);
+                  //return Text(snapshot.data!);
+                } else if (snapshot
+                    .hasError) {
+                  return Text(
+                      'Error: ${snapshot.error}');
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            )
+                : Text(''),
             //Text('test'),
           ],
         ),

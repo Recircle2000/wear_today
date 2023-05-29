@@ -30,19 +30,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  geolocator: ^9.0.1
-  http: ^0.13.6
-  cupertino_icons: ^1.0.2
+  geolocator: ^9.0.1 #gps 라이브러리
+  http: ^0.13.6 #http 통신 라이브러리
   intl: ^0.17.0 #날짜/숫자 형식 지정 라이브러리
-  baseflow_plugin_template: ^2.1.1
   flutter_config: ^2.0.0
-  provider: ^6.0.5
-  flutter_native_splash: ^2.2.19
-  weather_icons: ^3.0.0
+  provider: ^6.0.5 #클래스 구독 / 단순화된 stateful갱신
+  flutter_native_splash: ^2.2.19 #스플래시 스크린
+  weather_icons: ^3.0.0 #날씨 아이콘
   firebase_core: ^2.13.0
   flutter_launcher_icons: ^0.13.1
-  sqflite: ^2.2.8+4
-  path: ^1.8.2
+  sqflite: ^2.2.8+4 #sqlite사용
+  path: ^1.8.2 #sqlite사용을 위한 ios/Android 위치 자동 변환
+  synchronized: ^3.1.0 #DB 동시사용 충돌 방지
+  shared_preferences: ^2.1.1 #간단한 환경 설정을 로컬에 저장하기 위한 패키지
+  image_picker: ^0.8.7+5
+  path_provider: ^2.0.15
 
 
 dev_dependencies:
@@ -61,18 +63,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-assets:
-  - assets/splash/splash.png
-  - assets/female/
-  - assets/male/
-  - assets/Public/
-  - assets/clothes
+  assets:
+    - assets/clothes/
+    - assets/DB/clothes.db
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
