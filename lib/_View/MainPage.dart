@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wear_today/_View/getupDetailPage.dart';
-import 'package:wear_today/_View/newsettingPage.dart';
+import 'package:wear_today/_View/settingPage.dart';
 import 'package:wear_today/_ViewModel/DBViewModel.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
 import 'debug.dart';
 import '../_Model/weatherModel.dart';
-import 'oldsettingPage.dart';
+import 'settingPage.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -120,7 +122,7 @@ class _MainViewState extends State<MainView> {
                                       create: (context) => DBViewModel(),
                                     ),
                                   ],
-                                  child: oldSettingPage()
+                                  child: settingPage()
                               ),),
                           );
                         },
@@ -134,13 +136,12 @@ class _MainViewState extends State<MainView> {
                           shadowColor: Colors.black,
                         ),
                         child: Icon(
-                          Icons.add_photo_alternate_outlined,
+                          Icons.settings,
                           color: Colors.black,
                         )),
                   ],
                 ),
                 // Text('test'),
-
                 Text(
                   '$nowLocate',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
@@ -155,41 +156,14 @@ class _MainViewState extends State<MainView> {
                         style: TextStyle(
                             fontSize: 120, fontWeight: FontWeight.bold),
                       )
-                    : CircularProgressIndicator(),
-                weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
-                    ? Text(
-                        "체감 : ${findWindChillTemp(now.hour, weatherList)}°",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      )
-                    : Text(""),
+                    : SpinKitPulse(
+                  color: Colors.black,
+                  size: 100,
+                ),
                 Text(
                   "${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                /*ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => debug(
-
-                        )),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      // 동그란 모양의 버튼
-                      padding: EdgeInsets.all(16.0),
-                      // 버튼 패딩 설정
-                      primary: Colors.lightBlue[50],
-                      elevation: 4,
-                      shadowColor: Colors.black,
-                    ),
-                    child: Icon(
-                      Icons.bug_report,
-                      color: Colors.black,
-                    )),*/
-
                 Expanded(
                     child: ListView.builder(
                         itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
@@ -197,6 +171,7 @@ class _MainViewState extends State<MainView> {
                           return InkWell(
                             //터지 감지
                             onTap: () {
+                              weatherList.isNotEmpty ?
                               Navigator.push(
                                 context,
                                   MaterialPageRoute(
@@ -214,7 +189,7 @@ class _MainViewState extends State<MainView> {
                                     index: index,
                                         )),
                               ),
-                              );
+                              ) : Fluttertoast.showToast(msg: "데이터 불러오는 중...");
                             },
 
                             child: Card(
@@ -246,7 +221,10 @@ class _MainViewState extends State<MainView> {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : CircularProgressIndicator(),
+                                            : SpinKitThreeBounce(
+                                          color: Colors.black12,
+                                          size: 20,
+                                        ),
                                         Text(
                                           '${findPTY(now.hour + index, weatherList)}',
                                         )
@@ -264,7 +242,7 @@ class _MainViewState extends State<MainView> {
                                         weatherList
                                                 .isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                                             ? FutureBuilder<String>(
-                                                future: dbProvider.get1URL(getScore(now.hour + index, weatherList)),
+                                                future: dbProvider.getTopImagePath(getScore(now.hour + index, weatherList)),
                                                 builder: (context, snapshot) {
                                                   if (snapshot.hasData) {
                                                     return Image.asset("${snapshot.data!}",
@@ -285,7 +263,7 @@ class _MainViewState extends State<MainView> {
                                         weatherList
                                             .isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                                             ? FutureBuilder<String>(
-                                          future: dbProvider.get2URL(getScore(now.hour + index, weatherList)),
+                                          future: dbProvider.getUnderImagePath(getScore(now.hour + index, weatherList)),
                                           builder: (context, snapshot) {
                                             if (snapshot.hasData) {
                                               return Image.asset("${snapshot.data!}",
@@ -320,11 +298,11 @@ class _MainViewState extends State<MainView> {
 
   Future<String> get1URL(int Temp) {
     DBViewModel dbViewModel = DBViewModel();
-    return dbViewModel.get1URL(Temp);
+    return dbViewModel.getTopImagePath(Temp);
   }
 
   Future<String> get2URL(int Temp) {
     DBViewModel dbViewModel = DBViewModel();
-    return dbViewModel.get2URL(Temp);
+    return dbViewModel.getUnderImagePath(Temp);
   }
 }

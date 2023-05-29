@@ -43,8 +43,10 @@ dependencies:
   path: ^1.8.2 #sqlite사용을 위한 ios/Android 위치 자동 변환
   synchronized: ^3.1.0 #DB 동시사용 충돌 방지
   shared_preferences: ^2.1.1 #간단한 환경 설정을 로컬에 저장하기 위한 패키지
-  image_picker: ^0.8.7+5
+  image_picker: ^0.8.7+5 #갤러리 or 카메라에서 사진을 가져옴
   path_provider: ^2.0.15
+  fluttertoast: ^8.2.2 #토스트 메시지를 쉽게 구현
+  flutter_spinkit: ^5.2.0 # 다양한 로딩 화면
 
 
 dev_dependencies:

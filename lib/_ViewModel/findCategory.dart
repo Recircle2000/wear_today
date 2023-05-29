@@ -33,6 +33,21 @@ String findPOP(int time, List<DayWeather> weatherList){ // 리스트에서 원�
   return "";
 }
 
+//습도
+String findREH(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 POP 데이터만 찾아서 리턴.
+  String rtime = "";
+  if (time < 10) {
+    rtime = '0${time}00'; // 0시 ~ 9시는 '0'000형식으로 rtime에 저장
+  } else rtime ='${time}00'; //10~23시는 '00'00형식으로 rtime에 저장.
+
+  for (DayWeather item in weatherList){
+    if (item.category == 'POP' && item.fcstTime == rtime) { // 요청한 rtime의 POP데이터를 weatherList에서 찾아서 리턴.
+      return '${item.fcstValue!}';
+    }
+  }
+  return "";
+}
+
 //비/눈 정보가 없을땐 findSKY정보 자동 호출
 String findPTY(int time, List<DayWeather> weatherList){ // 리스트에서 원하는 시간에 맞는 PTY 데이터만 찾아서 리턴.
   String rtime = "";

@@ -16,5 +16,9 @@ class DBRepo{
   Future<int> insertRecord(Map<String, dynamic> record) async {
     return await DBHelper.insertRecord(record);
   }
+
+  Future<int> deleteRecord(String imagePath) async {
+    return await DBHelper.deleteRecord(imagePath);
+  }
 }
 
