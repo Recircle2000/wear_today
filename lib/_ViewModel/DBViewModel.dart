@@ -30,11 +30,11 @@ class DBViewModel extends ChangeNotifier {
       }
     });
   }
-  Future<String> getUnderImagePath(int Temp, {int value = 0}) async {;
-    return await lock.synchronized(() async {// .synchronized DB 동시 호출시 충돌 오류를 막고자 패키지 사용. 여러 스레드에서 동시 호출되어도 DB에러가 발생하지 않음.
-      records = await dbRepo.rawQuery("SELECT imagePath FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'under' and gender = 'public'");
-      if (records.isNotEmpty) {
-        return records[0]["imagePath"];
+  Future<String> getUnderImagePath(int Temp, {int value = 0}) async {
+    return await lock.synchronized(() async {
+      final records = await dbRepo.rawQuery("SELECT imagePath FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'under' and gender = 'public'");
+      if (records != null && records.isNotEmpty) {
+        return records[0]["imagePath"] as String;
       } else {
         return "assets/clothes/No_image.png";
       }

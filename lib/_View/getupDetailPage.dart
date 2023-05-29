@@ -56,7 +56,7 @@ class _getupDetailPage extends State<getupDetailPage>{
               style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold),),
-            Text('${dbProvider.getnotice(findPTY(now.hour + widget.index, widget.weatherList))}'),
+            // Text('${dbProvider.getnotice(findPTY(now.hour + widget.index, widget.weatherList))}'),
             FutureBuilder<String>(
               future: dbProvider.getTopImagePath(getScore(now.hour + widget.index, widget.weatherList)),
               builder: (context, snapshot) {

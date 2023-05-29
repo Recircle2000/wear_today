@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -164,8 +166,12 @@ class _MainViewState extends State<MainView> {
                   "${findPTY(now.hour, weatherList)}",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
                 Expanded(
                     child: ListView.builder(
+                      cacheExtent: 100,
                         itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -227,7 +233,7 @@ class _MainViewState extends State<MainView> {
                                         ),
                                         Text(
                                           '${findPTY(now.hour + index, weatherList)}',
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -242,22 +248,40 @@ class _MainViewState extends State<MainView> {
                                         weatherList
                                                 .isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                                             ? FutureBuilder<String>(
-                                                future: dbProvider.getTopImagePath(getScore(now.hour + index, weatherList)),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    return Image.asset("${snapshot.data!}",
-                                                    width: 70,
-                                                    height: 70,);
-                                                    //return Text(snapshot.data!);
-                                                  } else if (snapshot
-                                                      .hasError) {
-                                                    return Text(
-                                                        'Error: ${snapshot.error}');
-                                                  } else {
-                                                    return CircularProgressIndicator();
-                                                  }
-                                                },
-                                              )
+                                          future: dbProvider.getTopImagePath(getScore(now.hour + index, weatherList)),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData && snapshot.data != null) {
+                                              final imagePath = snapshot.data!;
+                                              final isAssetImage = imagePath.startsWith('assets/');
+                                              Widget imageWidget;
+
+                                              if (isAssetImage) {
+                                                imageWidget = Image.asset(
+                                                  imagePath,
+                                                  width: 80,
+                                                  height: 80,
+                                                );
+                                              } else {
+                                                // 앱 번들에 없는 이미지인 경우
+                                                imageWidget = Image.file(
+                                                  File(imagePath),
+                                                  width: 80,
+                                                  height: 80,
+                                                );
+                                              }
+                                              return imageWidget;
+
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                  'Error: ${snapshot.error}');
+                                            } else {
+                                              return SpinKitWave(
+                                                color: Colors.black,
+                                                size: 20,
+                                              );
+                                            }
+                                          },
+                                        )
                                             : Text(''),
                                         //Text("${dbProvider.getURL(findWindChillTemp(now.hour + index, weatherList))}"),
                                         weatherList
@@ -265,17 +289,35 @@ class _MainViewState extends State<MainView> {
                                             ? FutureBuilder<String>(
                                           future: dbProvider.getUnderImagePath(getScore(now.hour + index, weatherList)),
                                           builder: (context, snapshot) {
-                                            if (snapshot.hasData) {
-                                              return Image.asset("${snapshot.data!}",
-                                                width: 70,
-                                                height: 70,);
-                                              //return Text(snapshot.data!);
-                                            } else if (snapshot
-                                                .hasError) {
+                                            if (snapshot.hasData && snapshot.data != null) {
+                                            final imagePath = snapshot.data!;
+                                            final isAssetImage = imagePath.startsWith('assets/');
+                                            Widget imageWidget;
+
+                                              if (isAssetImage) {
+                                                imageWidget = Image.asset(
+                                                  imagePath,
+                                                  width: 80,
+                                                  height: 80,
+                                                );
+                                              } else {
+                                                // 앱 번들에 없는 이미지인 경우
+                                                imageWidget = Image.file(
+                                                  File(imagePath),
+                                                  width: 80,
+                                                  height: 80,
+                                                );
+                                              }
+                                              return imageWidget;
+
+                                            } else if (snapshot.hasError) {
                                               return Text(
                                                   'Error: ${snapshot.error}');
                                             } else {
-                                              return CircularProgressIndicator();
+                                              return SpinKitWave(
+                                                color: Colors.black,
+                                                size: 20,
+                                              );
                                             }
                                           },
                                         )
