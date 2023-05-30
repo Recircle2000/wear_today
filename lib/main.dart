@@ -18,6 +18,7 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
+  final bool brightnessMode = false;
 
   @override
   Widget build(BuildContext context) {

@@ -40,6 +40,7 @@ class DBHelper {
   static Future<List<Map<String, dynamic>>> getRecords() async {
     Database database = await DBHelper.database;
     return await database.query('clothes');
+    //clothes 테이블에 있는 모든 데이터를 리스트 맵 형식으로 반환
   }
 
   static Future<List<Map<String, dynamic>>> rawQuery(String query) async {

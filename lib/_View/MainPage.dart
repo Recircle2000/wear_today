@@ -10,7 +10,6 @@ import 'package:wear_today/_ViewModel/DBViewModel.dart';
 import 'package:wear_today/_ViewModel/DayweatherViewModel.dart';
 import '../_Model/global.dart';
 import '../_ViewModel/findCategory.dart';
-import 'debug.dart';
 import '../_Model/weatherModel.dart';
 import 'settingPage.dart';
 
@@ -112,6 +111,7 @@ class _MainViewState extends State<MainView> {
                     Icon(islocate),
                     ElevatedButton(
                         onPressed: () {
+                          Fluttertoast.showToast(msg: "정보를 꾹 누르면 삭제 할 수 있어요.");
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -146,28 +146,47 @@ class _MainViewState extends State<MainView> {
                 // Text('test'),
                 Text(
                   '$nowLocate',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300),
                 ),
-                Text(
-                  '${now.hour}시 기준',
+                /*Text(
+                  '현재 기준',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
+                ),*/
                 weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                     ? Text(
-                        "${findTMP(now.hour, weatherList)}°",
+                        "${findWeatherData(now.hour, weatherList,'TMP')}°",
                         style: TextStyle(
-                            fontSize: 120, fontWeight: FontWeight.bold),
+                            fontSize: 120, fontWeight: FontWeight.w300),
                       )
-                    : SpinKitPulse(
-                  color: Colors.black,
-                  size: 100,
+                    : Text(''),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                        ? Text(
+                      "${findWeatherData(now.hour, weatherList,'TMN')}°",
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.normal),
+                    )
+                        : Text(''),
+                    weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                        ? Text(
+                      " / ${findWeatherData(now.hour, weatherList,'TMX')}°",
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.normal),
+                    )
+                        : SpinKitPulse(
+                      color: Colors.black,
+                      size: 100,
+                    ),
+                  ],
                 ),
                 Text(
                   "${findPTY(now.hour, weatherList)}",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 5,
                 ),
                 Expanded(
                     child: ListView.builder(
@@ -195,7 +214,7 @@ class _MainViewState extends State<MainView> {
                                     index: index,
                                         )),
                               ),
-                              ) : Fluttertoast.showToast(msg: "데이터 불러오는 중...");
+                              ) : Fluttertoast.showToast(msg: "데이터를 불러오고 있어요.");
                             },
 
                             child: Card(
@@ -221,11 +240,11 @@ class _MainViewState extends State<MainView> {
                                         weatherList
                                                 .isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
                                             ? Text(
-                                                "${findTMP(now.hour + index, weatherList)}°",
+                                                "${findWeatherData(now.hour + index, weatherList, 'TMP')}°",
                                                 style: TextStyle(
                                                     fontSize: 40,
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                        FontWeight.w900),
                                               )
                                             : SpinKitThreeBounce(
                                           color: Colors.black12,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,14 +30,16 @@ class _settingPage extends State<settingPage> {
   String? description;
   int? lowTemp;
   int? highTemp;
+  TextEditingController val1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     DBViewModel dbProvider = Provider.of<DBViewModel>(context);
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        title: Text('DB관리',style: TextStyle(color: Colors.black,),),
+        title: Text('데이터 베이스 관리',style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Colors.black,),
           onPressed: () {
@@ -48,6 +51,11 @@ class _settingPage extends State<settingPage> {
       body: Column(
         children: [
           ElevatedButton(
+            style:(
+            ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.blue[50]!),
+            )
+            ),
             onPressed: () async {
               imagePath = await _takePhoto();
               showDialog(
@@ -64,6 +72,9 @@ class _settingPage extends State<settingPage> {
                           TextField(
                             onChanged: (value) => name = value,
                             decoration: InputDecoration(labelText: '영어이름'),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                            ],
                           ),
                           DropdownButtonFormField<String>(
                             value: section,
@@ -92,11 +103,14 @@ class _settingPage extends State<settingPage> {
                           ),
                           TextField(
                             onChanged: (value) => description = value,
-                            decoration: InputDecoration(labelText: '설명'),
+                            decoration: InputDecoration(labelText: '이름'),
                           ),
                           TextField(
                             onChanged: (value) => lowTemp = int.tryParse(value),
                             decoration: InputDecoration(labelText: '최저온도'),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             keyboardType: TextInputType.number,
                           ),
                           TextField(
@@ -104,6 +118,9 @@ class _settingPage extends State<settingPage> {
                                 highTemp = int.tryParse(value),
                             decoration: InputDecoration(labelText: '최고온도'),
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                           ),
                         ],
                       ),
@@ -120,12 +137,29 @@ class _settingPage extends State<settingPage> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              Fluttertoast.showToast(msg: "DB추가가 완료되었습니다.");
-                              final convertedData = await _convert();
-                              setState(() {
-                                dbProvider.insertRecord(convertedData);
-                              });
-                              Navigator.of(context).pop();
+                              if (imagePath != null &&
+                                  name != null &&
+                                  section != null &&
+                                  description != null &&
+                                  lowTemp != null &&
+                                  highTemp != null) {
+                                Fluttertoast.showToast(msg: "DB를 추가했어요.");
+                                final convertedData = await _convert();
+                                setState(() {
+                                  dbProvider.insertRecord(convertedData);
+                                });
+                                imagePath = null;
+                                name = null;
+                                section = null;
+                                description  = null;
+                                lowTemp  = null;
+                                highTemp  = null;
+                                Navigator.of(context).pop();
+                              }else {
+                                Fluttertoast.cancel();
+                                Fluttertoast.showToast(msg: "항목을 모두 입력해주세요.",backgroundColor: Colors.red,toastLength: Toast.LENGTH_SHORT,);
+                              }
+
                             },
                             child: Text('저장'),
                           ),
@@ -136,7 +170,7 @@ class _settingPage extends State<settingPage> {
                 },
               );
             },
-            child: Text('갤러리에서 DB 추가하기'),
+            child: Text('갤러리에서 사진 추가하기',style: TextStyle(color: Colors.black),),
           ),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
@@ -148,11 +182,9 @@ class _settingPage extends State<settingPage> {
                     itemCount: records.length,
                     itemBuilder: (context, index) {
                       final record = records[index];
-
                       // 이미지 파일의 경로 확인
                       final imagePath = record['imagePath'];
                       final isAssetImage = imagePath.startsWith('assets/');
-
                       // 이미지 위젯 생성
                       Widget imageWidget;
                       if (isAssetImage) {
@@ -194,12 +226,11 @@ class _settingPage extends State<settingPage> {
                                     TextButton(
                                       child: Text('삭제'),
                                       onPressed: () async {
-                                        Fluttertoast.showToast(msg: "DB삭제가 완료되었습니다.");
-                                        dbProvider
-                                            .deleteRecord(record['imagePath']);
-                                        Navigator.of(context).pop(); // 다이얼로그 닫기
+                                        Fluttertoast.showToast(msg: "DB를 삭제했어요.");
+                                        dbProvider.deleteRecord(record['imagePath']);
+                                        Navigator.of(context).pop();
                                         setState(() {
-                                          // 필요한 상태 업데이트
+
                                         });
                                       },
                                     ),
@@ -279,12 +310,9 @@ class _settingPage extends State<settingPage> {
 
   Future<Map<String, dynamic>> _convert() async {
     Map<String, dynamic> convMap = {};
-    if (imagePath != null &&
-        name != null &&
-        section != null &&
-        description != null &&
-        lowTemp != null &&
-        highTemp != null) {
+    if (imagePath != null && name != null &&
+        section != null && description != null &&
+        lowTemp != null && highTemp != null) {
       convMap = {
         'imagePath': imagePath,
         'name': name,
@@ -293,11 +321,9 @@ class _settingPage extends State<settingPage> {
         'lowTemp': lowTemp,
         'highTemp': highTemp,
         'gender': 'public',
-      };
-      return convMap;
+      }; return convMap;
       // 데이터 저장 후 다른 동작 수행
-    } else {
-      return convMap;
+    } else { return convMap;
       // 필요한 모든 필드를 입력하지 않은 경우에 대한 예외 처리
     }
   }

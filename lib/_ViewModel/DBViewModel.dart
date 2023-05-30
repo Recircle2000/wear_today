@@ -5,11 +5,11 @@ import 'package:synchronized/synchronized.dart';
 class DBViewModel extends ChangeNotifier {
   DBRepo dbRepo = DBRepo();
   List<Map<String, dynamic>> records = [];
+  List<String> recordList = [];
 
   Future<List<Map<String, dynamic>>> getRecords() async {
     records = await dbRepo.getRecords();
     return records;
-    notifyListeners();
   }
 
   Future<void> rawQuery(String query) async {
@@ -41,21 +41,36 @@ class DBViewModel extends ChangeNotifier {
     });
   }
 
-  Future<List> getTopImageAllPath(int Temp, {int value = 0}) async {
+  Future<List> getTopImageAllPath(int Temp, {int value = 0, bool value2 = true}) async {
+    String sel = "";
+    if (value2) {
+      sel = "description";
+    } else {
+      sel ="imagePath";
+    }
+
     return await lock.synchronized(() async { // .synchronized DB 동시 호출시 충돌 오류를 막고자 패키지 사용. 여러 스레드에서 동시 호출되어도 DB에러가 발생하지 않음.
-      records = await dbRepo.rawQuery("SELECT imagePath FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'top'");
+      records = await dbRepo.rawQuery("SELECT $sel FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'top'");
+      recordList = records.map((map) => map['$sel'].toString()).toList();
       if (records.isNotEmpty) {
-        return records;
-      } else return records;
+        return recordList;
+      } else return recordList;
     });
   }
 
-  Future<List> getUnderImageAllPath(int Temp, {int value = 0}) async {;
+  Future<List> getUnderImageAllPath(int Temp, {int value = 0, bool value2 = true}) async {
+    String sel = "";
+    if (value2) {
+      sel = "description";
+    } else {
+      sel ="imagePath";
+    }
   return await lock.synchronized(() async {// .synchronized DB 동시 호출시 충돌 오류를 막고자 패키지 사용. 여러 스레드에서 동시 호출되어도 DB에러가 발생하지 않음.
-    records = await dbRepo.rawQuery("SELECT imagePath FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'under'");
+    records = await dbRepo.rawQuery("SELECT $sel FROM clothes WHERE lowTemp <= $Temp and highTemp >= $Temp and section = 'under'");
+    recordList = records.map((map) => map['$sel'].toString()).toList();
     if (records.isNotEmpty) {
-      return records;
-    } else return records;
+      return recordList;
+    } else return recordList;
   });
   }
 
