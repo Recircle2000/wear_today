@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
-import 'package:wear_today/_Model/clothesModel.dart';
 import 'dart:io';
 
 class DBHelper {
@@ -25,6 +24,7 @@ class DBHelper {
     String databasePath = path.join(documentsDirectory.path, 'clothes.db');
 
     bool dbExists = await File(databasePath).exists();
+    //최초 설치 시 asset에 있던 DB파일을 앱 내부 디렉터리로 복사. 이미 있는경우 복사 안함.
     if (!dbExists) {
       ByteData data = await rootBundle.load("assets/DB/clothes.db");
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -32,6 +32,7 @@ class DBHelper {
     }
 
     _database = await openDatabase(
+      //데이터베이스 버전 관리
       databasePath,
       version: 1,
     );

@@ -24,6 +24,7 @@ class settingPage extends StatefulWidget {
 }
 
 class _settingPage extends State<settingPage> {
+  //입력한 데이터를 DB에 넣기전에 임시 저장.
   String? imagePath;
   String? name;
   String? section;
@@ -74,6 +75,7 @@ class _settingPage extends State<settingPage> {
                             decoration: InputDecoration(labelText: '영어이름'),
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+                              //정규표현식 사용. 영어만 입력가능. 띄어쓰기x
                             ],
                           ),
                           DropdownButtonFormField<String>(
@@ -109,7 +111,7 @@ class _settingPage extends State<settingPage> {
                             onChanged: (value) => lowTemp = int.tryParse(value),
                             decoration: InputDecoration(labelText: '최저온도'),
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.digitsOnly, //숫자 only
                             ],
                             keyboardType: TextInputType.number,
                           ),
@@ -119,7 +121,7 @@ class _settingPage extends State<settingPage> {
                             decoration: InputDecoration(labelText: '최고온도'),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.digitsOnly, //숫자 only
                             ],
                           ),
                         ],
@@ -137,6 +139,7 @@ class _settingPage extends State<settingPage> {
                           ),
                           TextButton(
                             onPressed: () async {
+                              //6개 항목(이미지 파일 포함)이 모두 입력되어야 DB에 추가함.
                               if (imagePath != null &&
                                   name != null &&
                                   section != null &&
@@ -202,7 +205,6 @@ class _settingPage extends State<settingPage> {
                           height: 80,
                         );
                       }
-                      // 필요한 데이터를 추출하여 UI에 출력하거나 다른 작업 수행
                       return Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),

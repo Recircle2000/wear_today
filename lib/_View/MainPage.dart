@@ -13,16 +13,16 @@ import '../_ViewModel/findCategory.dart';
 import '../_Model/weatherModel.dart';
 import 'settingPage.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MainView> createState() {
-    return _MainViewState();
+  State<MainPage> createState() {
+    return _MainPageState();
   }
 }
 
-class _MainViewState extends State<MainView> {
+class _MainPageState extends State<MainPage> {
   late List<DayWeather> weatherList;
   late List<Map<String, dynamic>> dbList;
 
@@ -32,9 +32,9 @@ class _MainViewState extends State<MainView> {
       /*appBar: AppBar(
         title: const Text('뭐입지?'),
       ),*/
-      body: Consumer2<DayWeatherViewModel, DBViewModel>(
+      body: Consumer2<DayWeatherViewModel, DBViewModel>( // 구독한 View모델을 소비.
         builder: (context, weatherProvider, dbProvider, child) {
-          weatherList = weatherProvider.weatherList;
+          weatherList = weatherProvider.weatherList; // ViewModel참조
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,6 +51,7 @@ class _MainViewState extends State<MainView> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
+                                //위치 변경
                                 title: Text("현재 위치 : $nowLocate"),
                                 content: TextField(
                                   decoration:
@@ -110,12 +111,13 @@ class _MainViewState extends State<MainView> {
                         )),
                     Icon(islocate),
                     ElevatedButton(
+                      //DB설정 페이지 푸시
                         onPressed: () {
                           Fluttertoast.showToast(msg: "정보를 꾹 누르면 삭제 할 수 있어요.");
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MultiProvider(
+                              builder: (context) => MultiProvider( // settingPage에서도 소비가 가능해야함. 위젯 트리 구조가 settingPage가 하위 위젯이 아니라고해서 부득이하게 구독을 다시 함.
                                   providers: [
                                     ChangeNotifierProvider<DayWeatherViewModel>(
                                       create: (context) => DayWeatherViewModel(),
@@ -148,11 +150,7 @@ class _MainViewState extends State<MainView> {
                   '$nowLocate',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300),
                 ),
-                /*Text(
-                  '현재 기준',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),*/
-                weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 피함.
+                weatherList.isNotEmpty // 초기 리스트는 비어있으며, 삼항연산자를 통해 위젯 오류를 회피함.
                     ? Text(
                         "${findWeatherData(now.hour, weatherList,'TMP')}°",
                         style: TextStyle(
@@ -175,7 +173,7 @@ class _MainViewState extends State<MainView> {
                       style: TextStyle(
                           fontSize: 15, fontWeight: FontWeight.normal),
                     )
-                        : SpinKitPulse(
+                        : SpinKitPulse( // 다양한 로딩 애니메이션 패키지
                       color: Colors.black,
                       size: 100,
                     ),
@@ -190,8 +188,9 @@ class _MainViewState extends State<MainView> {
                 ),
                 Expanded(
                     child: ListView.builder(
+                      //현재 시간 ~ 23시 까지의 데이터를 보여줌.
                       cacheExtent: 100,
-                        itemCount: (24 - (now.hour)), // 오늘 날짜까지만 보여주는 앱.
+                        itemCount: (24 - (now.hour)),
                         itemBuilder: (context, index) {
                           return InkWell(
                             //터지 감지
@@ -201,6 +200,7 @@ class _MainViewState extends State<MainView> {
                                 context,
                                   MaterialPageRoute(
                                   builder: (context) => MultiProvider(
+                                    //위젯 트리 구조를 해결하였다면 MultiProvider 재호출 안하고도 자동으로 하위 위젯도 구독이 되어야 함.
                                   providers: [
                                     ChangeNotifierProvider<DayWeatherViewModel>(
                                       create: (context) => DayWeatherViewModel(),
@@ -218,6 +218,7 @@ class _MainViewState extends State<MainView> {
                             },
 
                             child: Card(
+                              //각각의 리스트 내부에 구현.
                               margin: EdgeInsets.only(top: 15),
                               color: Colors.blue[50],
                               //카드 색상
@@ -273,7 +274,7 @@ class _MainViewState extends State<MainView> {
                                               final imagePath = snapshot.data!;
                                               final isAssetImage = imagePath.startsWith('assets/');
                                               Widget imageWidget;
-
+                                              // 기존 데이터는 asset이지만 사용자가 추가한 데이터는 asset이 아닌 내부 디렉토리에 저장됨. 따라서 파일명을 구분하는 로직을 추가함.
                                               if (isAssetImage) {
                                                 imageWidget = Image.asset(
                                                   imagePath,
@@ -312,7 +313,7 @@ class _MainViewState extends State<MainView> {
                                             final imagePath = snapshot.data!;
                                             final isAssetImage = imagePath.startsWith('assets/');
                                             Widget imageWidget;
-
+                                            // 기존 데이터는 asset이지만 사용자가 추가한 데이터는 asset이 아닌 내부 디렉토리에 저장됨. 따라서 파일명을 구분하는 로직을 추가함.
                                               if (isAssetImage) {
                                                 imageWidget = Image.asset(
                                                   imagePath,

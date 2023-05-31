@@ -50,7 +50,7 @@ class WeatherDataSource {
     return 0;
   }
 
-  void getXY2lalo() async{
+  void convert_XY_TO_lalo() async{
     var kakaoXYUrl = Uri.parse('https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?'
         'input_coord=WGS84&output_coord=WGS84&x=$Lati&y=$Longi');
     var kakaoTM = await http.get(kakaoXYUrl, headers: {"Authorization": "KakaoAK $kakaoApiKey"});
@@ -70,7 +70,7 @@ class WeatherDataSource {
       Lati = _myLocation.getlongi(); // 현재위치 기반 위도
       Longi = _myLocation.getlate();
       //위도 경도로 현재 행정위치 찾기
-      getXY2lalo();
+      convert_XY_TO_lalo();
     } else if (nowLocate != updateLocate) {
       await searchXYlocation(updateLocate!);
     }

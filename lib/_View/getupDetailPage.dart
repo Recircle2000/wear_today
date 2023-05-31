@@ -43,7 +43,6 @@ class _getupDetailPage extends State<getupDetailPage> {
       body: Center(
         child: Column(
           children: [
-            //테스트용
             SizedBox(
               width: 20,
               height: 20,
@@ -167,7 +166,6 @@ class _getupDetailPage extends State<getupDetailPage> {
                                           height: 60,
                                         );
                                       }
-
                                       // 각 아이템에 대한 UI 구성 및 반환
                                       return ListTile(
                                           title: Column(

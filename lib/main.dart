@@ -11,19 +11,17 @@ import '_DataSource/DBHelper.dart';
 void main() async{
   //WidgetsFlutterBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Firebase 초기화
-  //await DBHelper.initDatabase();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
-  final bool brightnessMode = false;
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); // 화면 방향 세로 고정
     return MaterialApp(
+      // MultiProvider 로 MaterialAPP 최상위 위젯에서 구독함으로써, 하위 위젯들이 모두 갱신되도록 구현.
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider<DayWeatherViewModel>(
@@ -34,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
           // 추가적인 ViewModel을 등록할 수 있음
         ],
-        child: const MainView(),
+        child: const MainPage(), //MainPage.dart
       ),
     );
   }
