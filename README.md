@@ -1,6 +1,6 @@
 # wear_today
 
-wearToday
+미니 플러터 프로젝트_체감 온도에 따른 옷차림 추천 앱
 
 ## Getting Started
 
